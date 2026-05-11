@@ -46,11 +46,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/sendry/sendry-js"
+    "url": "https://github.com/sendry-dev/sendry-js"
   },
   "homepage": "https://sendry.online",
   "bugs": {
-    "url": "https://github.com/sendry/sendry-js/issues"
+    "url": "https://github.com/sendry-dev/sendry-js/issues"
   },
   "publishConfig": {
     "access": "public",
