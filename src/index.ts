@@ -20,6 +20,8 @@ import { Inbound } from "./resources/inbound.js";
 import { NotificationPreferencesResource } from "./resources/notification-preferences.js";
 import { TestEmails } from "./resources/test-emails.js";
 import { Status } from "./resources/status.js";
+import { Automations } from "./resources/automations.js";
+import { Events } from "./resources/events.js";
 import type { SendryConfig } from "./types.js";
 
 export class Sendry {
@@ -44,6 +46,8 @@ export class Sendry {
   public readonly notificationPreferences: NotificationPreferencesResource;
   public readonly testEmails: TestEmails;
   public readonly status: Status;
+  public readonly automations: Automations;
+  public readonly events: Events;
 
   /**
    * Create a new Sendry SDK instance.
@@ -89,6 +93,8 @@ export class Sendry {
     this.notificationPreferences = new NotificationPreferencesResource(client);
     this.testEmails = new TestEmails(client);
     this.status = new Status(client);
+    this.automations = new Automations(client);
+    this.events = new Events(client);
   }
 
   /**
@@ -197,6 +203,8 @@ export { Inbound } from "./resources/inbound.js";
 export { NotificationPreferencesResource } from "./resources/notification-preferences.js";
 export { TestEmails } from "./resources/test-emails.js";
 export { Status } from "./resources/status.js";
+export { Automations } from "./resources/automations.js";
+export { Events } from "./resources/events.js";
 
 export {
   SendryError,

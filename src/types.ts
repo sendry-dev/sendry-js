@@ -1270,6 +1270,212 @@ export interface GetLatencyParams {
 }
 
 // ---------------------------------------------------------------------------
+// Automations
+// ---------------------------------------------------------------------------
+
+export type AutomationStatus = "draft" | "active" | "paused" | "archived";
+
+export type AutomationTriggerType =
+  | "event"
+  | "contact_added_to_segment"
+  | "schedule"
+  | "manual";
+
+export type AutomationReentryPolicy = "once_per_contact" | "cooldown" | "always";
+
+export interface Automation {
+  id: string;
+  name: string;
+  description: string | null;
+  status: AutomationStatus;
+  trigger_type: AutomationTriggerType;
+  trigger_config: Record<string, unknown>;
+  entry_segment_id: string | null;
+  reentry_policy: string;
+  reentry_cooldown_seconds: number | null;
+  total_runs: number;
+  active_runs: number;
+  completed_runs: number;
+  failed_runs: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export type AutomationStepType = "send_email" | "wait" | "branch" | "ab_split";
+
+export type AutomationStepConfig =
+  | {
+      type: "send_email";
+      template_id?: string;
+      from: string;
+      reply_to?: string;
+      subject?: string;
+      html?: string;
+      text?: string;
+      message_type?: "transactional" | "marketing";
+      topic_id?: string;
+      variables?: Record<string, string>;
+    }
+  | { type: "wait"; duration_seconds: number }
+  | {
+      type: "branch";
+      condition: {
+        op: string;
+        property?: string;
+        value?: unknown;
+        segment_id?: string;
+        event_name?: string;
+        within_seconds?: number;
+      };
+    }
+  | {
+      type: "ab_split";
+      split: { a: number; b: number };
+      seed?: string;
+    };
+
+export interface AutomationStep {
+  id: string;
+  automation_id: string;
+  parent_step_id: string | null;
+  branch_label: string | null;
+  position: number;
+  type: AutomationStepType;
+  config: AutomationStepConfig & Record<string, unknown>;
+  created_at: string;
+  updated_at: string;
+}
+
+export type AutomationRunStatus =
+  | "pending"
+  | "in_progress"
+  | "completed"
+  | "failed"
+  | "cancelled";
+
+export interface AutomationRun {
+  id: string;
+  automation_id: string;
+  contact_id: string | null;
+  contact_email: string;
+  trigger_event_id: string | null;
+  status: AutomationRunStatus;
+  current_step_id: string | null;
+  context: Record<string, unknown>;
+  started_at: string;
+  completed_at: string | null;
+  failed_at: string | null;
+  failure_reason: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type AutomationRunStepStatus =
+  | "pending"
+  | "in_progress"
+  | "completed"
+  | "skipped"
+  | "failed";
+
+export interface AutomationRunStep {
+  id: string;
+  run_id: string;
+  step_id: string;
+  status: AutomationRunStepStatus;
+  email_id: string | null;
+  branch_taken: string | null;
+  scheduled_for: string | null;
+  started_at: string | null;
+  completed_at: string | null;
+  error: string | null;
+  created_at: string;
+}
+
+export interface ListAutomationsParams extends PaginationParams {
+  status?: AutomationStatus;
+}
+
+export interface CreateAutomationParams {
+  name: string;
+  description?: string;
+  trigger_type: AutomationTriggerType;
+  trigger_config?: Record<string, unknown>;
+  entry_segment_id?: string;
+  reentry_policy?: AutomationReentryPolicy;
+  reentry_cooldown_seconds?: number;
+}
+
+export interface UpdateAutomationParams {
+  name?: string;
+  description?: string | null;
+  trigger_config?: Record<string, unknown>;
+  entry_segment_id?: string | null;
+  reentry_policy?: AutomationReentryPolicy;
+  reentry_cooldown_seconds?: number | null;
+}
+
+export interface AddAutomationStepParams {
+  parent_step_id?: string | null;
+  branch_label?: string | null;
+  position?: number;
+  config: AutomationStepConfig;
+}
+
+export interface UpdateAutomationStepParams {
+  parent_step_id?: string | null;
+  branch_label?: string | null;
+  position?: number;
+  config?: AutomationStepConfig;
+}
+
+export interface ListAutomationRunsParams extends PaginationParams {
+  status?: string;
+}
+
+export interface CreateAutomationRunParams {
+  contact_id?: string;
+  contact_email?: string;
+  context?: Record<string, unknown>;
+}
+
+export interface AutomationStepListResponse {
+  data: AutomationStep[];
+}
+
+export interface AutomationRunStepListResponse {
+  data: AutomationRunStep[];
+}
+
+// ---------------------------------------------------------------------------
+// Events
+// ---------------------------------------------------------------------------
+
+export interface IngestedEvent {
+  id: string;
+  external_id: string | null;
+  name: string;
+  contact_email: string | null;
+  contact_id: string | null;
+  payload: Record<string, unknown>;
+  received_at: string;
+  processed_at: string | null;
+  triggered_runs: number;
+  deduped?: boolean;
+}
+
+export interface IngestEventParams {
+  name: string;
+  event_id?: string;
+  contact_email?: string;
+  contact_id?: string;
+  payload?: Record<string, unknown>;
+}
+
+export interface ListEventsParams extends PaginationParams {
+  name?: string;
+}
+
+// ---------------------------------------------------------------------------
 // SDK Configuration
 // ---------------------------------------------------------------------------
 
