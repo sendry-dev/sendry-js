@@ -5,7 +5,7 @@ Official TypeScript SDK for the [Sendry](https://sendry.online) email API.
 ## Installation
 
 ```bash
-npm install sendry
+npm install sendry-sdk
 # or
 bun add sendry
 # or
@@ -15,7 +15,7 @@ pnpm add sendry
 ## Quick Start
 
 ```ts
-import { Sendry } from "sendry";
+import { Sendry } from "sendry-sdk";
 
 const sendry = new Sendry("sn_live_your_api_key");
 
@@ -407,7 +407,7 @@ import {
   RateLimitError,
   NotFoundError,
   NetworkError,
-} from "sendry";
+} from "sendry-sdk";
 
 try {
   await sendry.emails.send({ ... });
@@ -439,7 +439,7 @@ try {
 Verify that incoming webhook requests genuinely originate from Sendry using HMAC-SHA256:
 
 ```ts
-import { verifyWebhookSignature } from "sendry";
+import { verifyWebhookSignature } from "sendry-sdk";
 
 // Express.js example (requires raw body)
 app.post("/webhooks/sendry", express.raw({ type: "*/*" }), async (req, res) => {

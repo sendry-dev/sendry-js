@@ -136,7 +136,7 @@ export class Sendry {
  *
  * @example
  * ```ts
- * import { verifyWebhookSignature } from "sendry";
+ * import { verifyWebhookSignature } from "sendry-sdk";
  *
  * const isValid = verifyWebhookSignature(rawBody, signature, secret);
  * ```
